@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/home.css') }}">
+
+
+</head>
+<body>
+    <div class="container-l">
+		<div class="table-wrapper">
+			<div class="table-title">
+				<div class="row">
+					<div class="col-sm-6">
+						<h2><b>Library Management System </b></h2>
+					</div>
+					<div class="col-sm-6">
+						<button type="submit" id="logout" class="btn btn-primary btn-lg">Log out</button>
+                        <a href="/addBook"><button type="submit" id="logout" class="btn btn-primary btn-lg">Add Book</button></a>
+						<a href="/deleteBook"><button type="submit"  class="btn btn-primary btn-lg">Delete Book</button></a>
+						<a href="/AdminProfile"><button type="submit" class="btn btn-primary btn-lg">Profile</button></a>
+						<a href="/Admin"><button type="submit" class="btn btn-primary btn-lg">Main</button></a>
+                    </div>
+				</div>
+			</div>
+<div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form id="deletebook">
+				<div class="modal-header">						
+					<h5 class="modal-title">Delete Book</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">	
+                    <div class="form-group">
+						<input type="text" id="bookisbn"class="form-control" required placeholder="ISBN" >
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<button  type="submit" id="delete" class="btn btn-secondary">Save</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+<script>
+    $('#deletebook').submit(function (e) {
+    e.preventDefault();
+    $.ajax({
+        url: 'http://127.0.0.1:5000/deleteBook-ajax',
+        type: 'POST',
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        },
+        contentType: 'application/JSON; chartset = utf-8',
+        data: JSON.stringify({
+            isbn: $('#bookisbn').val(),
+        }),
+        success: function(result){
+            console.log(result);
+        if (result == 'success'){
+			alert('Successfully Book Deleted')
+            window.location.assign('/Admin');
+        }
+		else if (result == "logged_out"){
+			alert("Oops...Please Login again")
+		}
+		else{
+			alert('ISBN of Book is not Found')
+		}
+        }
+    });	
+});
+
+$("#logout").on("click", function () {
+          
+	$.ajax({
+	  url: 'http://127.0.0.1:5000/logout',
+	  type: 'POST',
+	  headers: {
+		'X-Requested-With': 'XMLHttpRequest'
+	  },
+	  contentType: 'application/JSON; charset=utf-8',
+	  success: function (result) {
+		  alert("Logged out Successfully")
+		  window.location.assign("/login");
+	  }
+
+	});
+
+  });
+</script>
+</html>

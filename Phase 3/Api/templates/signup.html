@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+<title>Create Your Account</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/forms.css') }}">
+
+</head>
+<body>
+    <div class="container-l">
+		<div class="table-wrapper">
+			<div class="table-title">
+				<div class="row">
+					<div class="col-sm-6">
+						<h2><b>Library Management System </b></h2>
+					</div>
+					<div class="col-sm-6">
+						<a href ="/"><button type="submit" class="btn btn-primary btn-lg">Home</button></a>
+					</div>
+				</div>
+			</div>
+<div class="signup-form">
+    <form id="signup-form">
+		<h2>Sign Up</h2>
+		<p>Please fill this form to create an account!</p>
+		<hr>
+        <div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text">
+						<span class="fa fa-user"></span>
+					</span>                    
+				</div>
+				<input type="text" id="userid" class="form-control" name="User ID" placeholder="User ID" required="required">
+			</div>
+        </div>
+      <div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text">
+						<span class="fa fa-user"></span>
+					</span>                    
+				</div>
+				<input type="text" id="username" class="form-control" name="username" placeholder="Username" required="required">
+			</div>
+        </div>
+        <div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text">
+						<i class="fa fa-paper-plane"></i>
+					</span>                    
+				</div>
+				<input type="email" id="useremail" class="form-control" name="email" placeholder="Email Address" required="required">
+			</div>
+        </div>
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text">
+						<i class="fa fa-lock"></i>
+					</span>                    
+				</div>
+				<input type="text" id="userpassword" class="form-control" name="password" placeholder="Password" required="required">
+			</div>
+        </div>
+		<div class="form-group">
+            <button  type="submit" id="signup" class="btn btn-primary btn-lg">Sign Up</button>
+        </div>
+        <div class="text-center">Already have an account? <a href ="/login">Login here </a></div>
+    </div>
+</form>
+</body>
+<script>
+	$('#signup-form').submit(function (e) {
+	e.preventDefault();
+	console.log($('userid').val());
+	$.ajax({
+		url: 'http://127.0.0.1:5000/signup-ajax',
+		type: 'POST',
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+		},
+		contentType: 'application/JSON; chartset = utf-8',
+		data: JSON.stringify({
+			id: $('#userid').val(),
+			uname: $('#username').val(),
+			email: $('#useremail').val(),
+			password: $('#userpassword').val()
+		}),
+
+		success: function(result){
+		console.log(result);
+		if (result == 'success'){
+			alert("Successfully Registered")
+			window.location.assign('/login');
+		}
+		else {
+			alert("Email Already Registered Or ID is already in Database! Try a new One.")
+		}
+		}
+	});	
+});
+</script>
+</html>
